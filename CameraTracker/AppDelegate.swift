@@ -9,23 +9,35 @@
 import UIKit
 import SwiftUI
 
+class UserS: ObservableObject {
+    @Published var score = 0
+}
+var sett = UserS()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(userLoggedIn), name: Notification.Name("UserLoggedIn"), object: nil)
 
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
 
         // Use a UIHostingController as window root view controller.
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIHostingController(rootView: contentView)
+        window.rootViewController = UIHostingController(rootView: contentView.environmentObject(sett))
         self.window = window
         window.makeKeyAndVisible()
         return true
+    }
+    
+    @objc func userLoggedIn(){
+        sett.score+=1
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

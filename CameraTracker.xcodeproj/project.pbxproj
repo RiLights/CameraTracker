@@ -14,6 +14,7 @@
 		F061F5FC238F7A6900755A4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F061F5FB238F7A6900755A4F /* Preview Assets.xcassets */; };
 		F061F5FF238F7A6900755A4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F061F5FD238F7A6900755A4F /* LaunchScreen.storyboard */; };
 		F061F60A238F7A6900755A4F /* CameraTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F061F609238F7A6900755A4F /* CameraTrackerTests.swift */; };
+		F0C955B52392000F0071267D /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C955B42392000F0071267D /* Session.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		F061F605238F7A6900755A4F /* CameraTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F061F609238F7A6900755A4F /* CameraTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTrackerTests.swift; sourceTree = "<group>"; };
 		F061F60B238F7A6900755A4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0C955B42392000F0071267D /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				F061F5FD238F7A6900755A4F /* LaunchScreen.storyboard */,
 				F061F600238F7A6900755A4F /* Info.plist */,
 				F061F5FA238F7A6900755A4F /* Preview Content */,
+				F0C955B42392000F0071267D /* Session.swift */,
 			);
 			path = CameraTracker;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0C955B52392000F0071267D /* Session.swift in Sources */,
 				F061F5F5238F7A6800755A4F /* ContentView.swift in Sources */,
 				F061F5F3238F7A6800755A4F /* AppDelegate.swift in Sources */,
 				F061F5F7238F7A6800755A4F /* Experience.rcproject in Sources */,
@@ -374,7 +378,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = test.CameraTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -394,7 +398,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = test.CameraTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
