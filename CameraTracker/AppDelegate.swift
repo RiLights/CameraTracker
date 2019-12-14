@@ -9,10 +9,11 @@
 import UIKit
 import SwiftUI
 
-class UserS: ObservableObject {
-    @Published var score = 0
+class CameraDataFlow: ObservableObject {
+    @Published var track_state = 0
+    @Published var rec_state = false
 }
-var sett = UserS()
+var g_env = CameraDataFlow()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,23 +22,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(userLoggedIn), name: Notification.Name("UserLoggedIn"), object: nil)
 
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
 
         // Use a UIHostingController as window root view controller.
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIHostingController(rootView: contentView.environmentObject(sett))
+        window.rootViewController = UIHostingController(rootView: contentView.environmentObject(g_env))
         self.window = window
         window.makeKeyAndVisible()
         return true
-    }
-    
-    @objc func userLoggedIn(){
-        sett.score+=1
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

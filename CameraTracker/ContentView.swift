@@ -11,19 +11,15 @@ import RealityKit
 
 
 struct ContentView : View {
-    var test:CGFloat = 4
-    //@State private var test:CGFloat = 40
-    //@State private var pad:CGFloat = 3
     @State var rec_test:Int = 0
     
-    var rec:Bool = false
-    //@Binding var rec:Int = 0
-    @EnvironmentObject var sett: UserS
-    //@ObservedObject var ct_session = CTSession()
+    @State var rec:Bool = false
+    @EnvironmentObject var g_data: CameraDataFlow
     
     var body: some View {
         ZStack(){
-            ARViewContainer(rec:$rec_test).edgesIgnoringSafeArea(.all)
+            ARViewContainer().edgesIgnoringSafeArea(.all)
+                
             //ARViewContainer().tracking_state
             VStack(alignment: .center){
                 ZStack(alignment: .center){
@@ -35,7 +31,7 @@ struct ContentView : View {
                         .opacity(0.5)
                     VStack(alignment: .center){
                         Text("Tracking State:")
-                        Text("Stabel")
+                        Text(g_data.track_state == 1 ? "Ready" : "Insufficient")
                     }
                 }
                 Spacer()
@@ -55,10 +51,13 @@ struct ContentView : View {
                     
                     HStack{
                         Spacer()
-                        Text(String(sett.score))
+                        Text(String(self.g_data.rec_state))
                         Button(action: {
-                            print("button pressed:"+String(UIDevice.current.orientation.rawValue))
-                            //self.rec = !self.rec
+                            //print("button pressed:"+String(UIDevice.current.orientation.rawValue))
+                            if (self.g_data.track_state == 1){
+                                self.rec = !self.rec
+                                self.g_data.rec_state = self.rec
+                            }
                         }){
                             RoundedRectangle(cornerRadius: self.rec ? 4 : 40)
                                 //.size(CGSize(width: 50, height: 50))
@@ -66,12 +65,13 @@ struct ContentView : View {
                                 .padding(self.rec ? 15 : 3)
                                 .overlay(
                                     Circle()
-                                        .stroke(Color.white, lineWidth: 2)
+                                        .stroke(g_data.track_state == 1 ? Color.white : Color.gray, lineWidth: 2)
                                 )
                                 .animation(.easeInOut(duration: 0.3))
                         }
                             .frame(width: 50, height: 50)
                             .padding(.horizontal,20)
+                        //.foregroundColor(.green)
 
                         Button(action: {
                             print("Make Archive")
@@ -109,26 +109,33 @@ struct ContentView : View {
 
 struct ARViewContainer: UIViewRepresentable {
     
-    @Binding var rec:Int
+    //@Binding var rec:Bool
+    
+    //var arView:CTSession
+    
     
     func makeUIView(context: Context) -> CTSession {
         
         let arView:CTSession = CTSession(frame: .zero)
         
-        // Load the "Box" scene from the "Experience" Reality File
-        //let boxAnchor = try! Experience.loadBox()
-        
-        // Add the box anchor to the scene
-        //arView.scene.anchors.append(boxAnchor)
-        
+        arView.create_dirs()
         arView.debugOptions = [.showFeaturePoints,.showWorldOrigin]
         
         arView.session.delegate = arView
-        //rec = arView.test_bind
         
         return arView
         
     }
+    
+//    func record(state:Bool){
+//        print("debug rec",String(rec))
+////        if state{
+////            arView.start_record()
+////        }
+////        else{
+////            arView.stop_record()
+////        }
+//    }
     
     func updateUIView(_ uiView: CTSession, context: Context) {}
     

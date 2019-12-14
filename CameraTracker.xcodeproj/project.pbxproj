@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		F061F5F3238F7A6800755A4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F061F5F2238F7A6800755A4F /* AppDelegate.swift */; };
 		F061F5F5238F7A6800755A4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F061F5F4238F7A6800755A4F /* ContentView.swift */; };
-		F061F5F7238F7A6800755A4F /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = F061F5F6238F7A6800755A4F /* Experience.rcproject */; };
 		F061F5F9238F7A6900755A4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F061F5F8238F7A6900755A4F /* Assets.xcassets */; };
 		F061F5FC238F7A6900755A4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F061F5FB238F7A6900755A4F /* Preview Assets.xcassets */; };
-		F061F5FF238F7A6900755A4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F061F5FD238F7A6900755A4F /* LaunchScreen.storyboard */; };
 		F061F60A238F7A6900755A4F /* CameraTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F061F609238F7A6900755A4F /* CameraTrackerTests.swift */; };
 		F0C955B52392000F0071267D /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C955B42392000F0071267D /* Session.swift */; };
 /* End PBXBuildFile section */
@@ -31,10 +29,8 @@
 		F061F5EF238F7A6800755A4F /* CameraTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F061F5F2238F7A6800755A4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F061F5F4238F7A6800755A4F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F061F5F6238F7A6800755A4F /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		F061F5F8238F7A6900755A4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F061F5FB238F7A6900755A4F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F061F5FE238F7A6900755A4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F061F600238F7A6900755A4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F061F605238F7A6900755A4F /* CameraTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F061F609238F7A6900755A4F /* CameraTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTrackerTests.swift; sourceTree = "<group>"; };
@@ -83,12 +79,10 @@
 			children = (
 				F061F5F2238F7A6800755A4F /* AppDelegate.swift */,
 				F061F5F4238F7A6800755A4F /* ContentView.swift */,
-				F061F5F6238F7A6800755A4F /* Experience.rcproject */,
+				F0C955B42392000F0071267D /* Session.swift */,
 				F061F5F8238F7A6900755A4F /* Assets.xcassets */,
-				F061F5FD238F7A6900755A4F /* LaunchScreen.storyboard */,
 				F061F600238F7A6900755A4F /* Info.plist */,
 				F061F5FA238F7A6900755A4F /* Preview Content */,
-				F0C955B42392000F0071267D /* Session.swift */,
 			);
 			path = CameraTracker;
 			sourceTree = "<group>";
@@ -191,7 +185,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F061F5FF238F7A6900755A4F /* LaunchScreen.storyboard in Resources */,
 				F061F5FC238F7A6900755A4F /* Preview Assets.xcassets in Resources */,
 				F061F5F9238F7A6900755A4F /* Assets.xcassets in Resources */,
 			);
@@ -214,7 +207,6 @@
 				F0C955B52392000F0071267D /* Session.swift in Sources */,
 				F061F5F5238F7A6800755A4F /* ContentView.swift in Sources */,
 				F061F5F3238F7A6800755A4F /* AppDelegate.swift in Sources */,
-				F061F5F7238F7A6800755A4F /* Experience.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,17 +227,6 @@
 			targetProxy = F061F606238F7A6900755A4F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		F061F5FD238F7A6900755A4F /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F061F5FE238F7A6900755A4F /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		F061F60C238F7A6900755A4F /* Debug */ = {
