@@ -18,7 +18,7 @@ struct ContentView : View {
     
     var body: some View {
         ZStack(){
-            ARViewContainer().edgesIgnoringSafeArea(.all)
+            ARViewContainer(rec:$rec).edgesIgnoringSafeArea(.all)
                 
             //ARViewContainer().tracking_state
             VStack(alignment: .center){
@@ -59,10 +59,10 @@ struct ContentView : View {
                                 self.g_data.rec_state = self.rec
                             }
                         }){
-                            RoundedRectangle(cornerRadius: self.rec ? 4 : 40)
+                            RoundedRectangle(cornerRadius: self.g_data.rec_state ? 4 : 40)
                                 //.size(CGSize(width: 50, height: 50))
-                                .foregroundColor(self.rec ? .red : .white)
-                                .padding(self.rec ? 15 : 3)
+                                .foregroundColor(self.g_data.rec_state ? .red : .white)
+                                .padding(self.g_data.rec_state ? 15 : 3)
                                 .overlay(
                                     Circle()
                                         .stroke(g_data.track_state == 1 ? Color.white : Color.gray, lineWidth: 2)
@@ -74,13 +74,15 @@ struct ContentView : View {
                         //.foregroundColor(.green)
 
                         Button(action: {
-                            print("Make Archive")
+                            if self.g_data.data_dir_state{
+                                print("Make Archive")
+                            }
                         }){
                             Text("Make Archive")
                                 .fontWeight(.bold)
                                 .font(.subheadline)
                                 .padding(7)
-                                .background(Color.blue)
+                                .background(g_data.data_dir_state ? Color.blue : Color.gray)
                                 .cornerRadius(15)
                                 .foregroundColor(.white)
                         }
@@ -109,34 +111,34 @@ struct ContentView : View {
 
 struct ARViewContainer: UIViewRepresentable {
     
-    //@Binding var rec:Bool
+    @Binding var rec:Bool
+    //@Binding var data_dir_state:Bool
     
-    //var arView:CTSession
+    var arView:CTSession?
     
     
     func makeUIView(context: Context) -> CTSession {
         
         let arView:CTSession = CTSession(frame: .zero)
         
-        arView.create_dirs()
         arView.debugOptions = [.showFeaturePoints,.showWorldOrigin]
         
         arView.session.delegate = arView
+        
+        g_env.data_dir_state = check_data_dir()
         
         return arView
         
     }
     
-//    func record(state:Bool){
-//        print("debug rec",String(rec))
-////        if state{
-////            arView.start_record()
-////        }
-////        else{
-////            arView.stop_record()
-////        }
-//    }
-    
-    func updateUIView(_ uiView: CTSession, context: Context) {}
-    
+    func updateUIView(_ uiView: CTSession, context: Context) {
+        let state = UIApplication.shared.applicationState
+
+        if rec && (state.rawValue == 0){
+            uiView.start_record()
+        }
+        else{
+            uiView.stop_record()
+        }
+    }
 }
