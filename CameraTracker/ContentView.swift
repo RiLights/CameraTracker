@@ -8,19 +8,19 @@
 
 import SwiftUI
 import RealityKit
+import ARKit
 
 
 struct ContentView : View {
-    @State var rec_test:Int = 0
+    @State var test:String = ""
     
     @State var rec:Bool = false
     @EnvironmentObject var g_data: CameraDataFlow
     
     var body: some View {
         ZStack(){
-            ARViewContainer(rec:$rec).edgesIgnoringSafeArea(.all)
+            ARViewContainer(test:$test,rec:$rec).edgesIgnoringSafeArea(.all)
                 
-            //ARViewContainer().tracking_state
             VStack(alignment: .center){
                 ZStack(alignment: .center){
                     RoundedRectangle(cornerRadius: 10)
@@ -51,16 +51,14 @@ struct ContentView : View {
                     
                     HStack{
                         Spacer()
-                        Text(String(self.g_data.rec_state))
+
                         Button(action: {
-                            //print("button pressed:"+String(UIDevice.current.orientation.rawValue))
                             if (self.g_data.track_state == 1){
                                 self.rec = !self.rec
                                 self.g_data.rec_state = self.rec
                             }
                         }){
                             RoundedRectangle(cornerRadius: self.g_data.rec_state ? 4 : 40)
-                                //.size(CGSize(width: 50, height: 50))
                                 .foregroundColor(self.g_data.rec_state ? .red : .white)
                                 .padding(self.g_data.rec_state ? 15 : 3)
                                 .overlay(
@@ -71,48 +69,37 @@ struct ContentView : View {
                         }
                             .frame(width: 50, height: 50)
                             .padding(.horizontal,20)
-                        //.foregroundColor(.green)
-
-                        Button(action: {
-                            if self.g_data.data_dir_state{
-                                print("Make Archive")
-                            }
-                        }){
-                            Text("Make Archive")
-                                .fontWeight(.bold)
-                                .font(.subheadline)
-                                .padding(7)
-                                .background(g_data.data_dir_state ? Color.blue : Color.gray)
-                                .cornerRadius(15)
-                                .foregroundColor(.white)
-                        }
-                        .padding(.horizontal,10)
-                            
+                        Spacer()
                     }
                 }
-//                ZStack(alignment: .bottom){
-//
-//
-////                    Button(action: {
-////                      print("button pressed")
-////
-////                    }){
-////                        RoundedRectangle(cornerRadius: 10)
-////                        .size(CGSize(width: 50, height: 50))
-////                            .foregroundColor(.red)
-////                    }
-//                }
+
             }
         }
             
-        //return ARViewContainer().edgesIgnoringSafeArea(.all)
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
-    
+    @Binding var test:String
     @Binding var rec:Bool
-    //@Binding var data_dir_state:Bool
+    var defaultConfiguration: ARWorldTrackingConfiguration {
+        let configuration = ARWorldTrackingConfiguration()
+        let supportedFormats = ARWorldTrackingConfiguration.supportedVideoFormats
+
+        //configuration.planeDetection = .vertical
+        //configuration.environmentTexturing = .automatic
+        configuration.isAutoFocusEnabled = false
+        //print("debug format",configuration.videoFormat.imageResolution.height)
+        configuration.videoFormat = supportedFormats.last!
+        for format: ARConfiguration.VideoFormat in supportedFormats {
+            if (format.imageResolution.width == 720 ||
+                format.imageResolution.height == 720 ){
+                configuration.videoFormat = format
+            }
+        }
+
+        return configuration
+    }
     
     var arView:CTSession?
     
@@ -124,8 +111,7 @@ struct ARViewContainer: UIViewRepresentable {
         arView.debugOptions = [.showFeaturePoints,.showWorldOrigin]
         
         arView.session.delegate = arView
-        
-        g_env.data_dir_state = check_data_dir()
+        arView.session.run(self.defaultConfiguration)
         
         return arView
         
@@ -133,6 +119,7 @@ struct ARViewContainer: UIViewRepresentable {
     
     func updateUIView(_ uiView: CTSession, context: Context) {
         let state = UIApplication.shared.applicationState
+        uiView.session.run(self.defaultConfiguration)
 
         if rec && (state.rawValue == 0){
             uiView.start_record()
