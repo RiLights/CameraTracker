@@ -18,7 +18,6 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
     var seq_output_dir:URL?
     var data_output_dir:URL?
     var output_dir:URL?
-    var track_data_file:String?
     var track_data_mat_file:String?
     var record_frames:Int = 0
     var total_frames:Float = 0
@@ -82,70 +81,20 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
             return UIImage.Orientation.right
         }
     }
-//    func get_rotation(mat:simd_float4x4) -> SCNVector3 {
-//        var x:Float = 0
-//        var y:Float = 0
-//        var z:Float = 0
-//        x = asin(mat.columns.2.y)
-//
-//        if (CGFloat(x) < (CGFloat.pi / 2))
-//        {
-//            if (CGFloat(x) > (-(CGFloat.pi) / 2))
-//            {
-//                z = atan2(-mat.columns.0.y, mat.columns.1.y);
-//                y = atan2(-mat.columns.2.x, mat.columns.2.z);
-//            }
-//            else
-//            {
-//                z = -atan2(-mat.columns.0.z, mat.columns.0.x);
-//                y = 0;
-//            }
-//        }
-//        else
-//        {
-//            z = atan2(-mat.columns.0.z, -mat.columns.0.x);
-//            y = 0;
-//        }
-//        x = x * 180/Float(CGFloat.pi)
-//        y = y * 180/Float(CGFloat.pi)
-//        z = z * 180/Float(CGFloat.pi)
-//        let rot = SCNVector3(x,y,z)
-//        return rot
-//    }
     
     func rad2deg(_ number: Float) -> Float {
         return number * 180 / .pi
     }
     func save_track_data(_ frame_num:Int,_ frame: ARFrame){
         let transform = frame.camera.transform
-        //let d_rots = self.get_rotation(mat:transform)
-        let rotx = self.rad2deg(frame.camera.eulerAngles.x) //* 180/Float(CGFloat.pi)
-        let roty = self.rad2deg(frame.camera.eulerAngles.y) //* 180/Float(CGFloat.pi)
-        let rotz = self.rad2deg(frame.camera.eulerAngles.z) //* 180/Float(CGFloat.pi)
-        
-        
-        let position = SCNVector3(
-            transform.columns.3.x,
-            transform.columns.3.y,
-            transform.columns.3.z
-        )
-        let str_data = String(frame_num) + "  " + String(position.x)+"  " + String(position.y)+"  " + String(position.z)+" "+String(rotx)+" "+" "+String(roty)+" "+String(rotz)+"\n"
         
         let str_mat = String(frame_num) + "  " + String(transform.columns.0.x) + "  " + String(transform.columns.0.y) + "  " + String(transform.columns.0.z) + " 0.0" + "  " + String(transform.columns.1.x) + "  " + String(transform.columns.1.y) + "  " + String(transform.columns.1.z) + " 0.0" + "  " + String(transform.columns.2.x) + "  " + String(transform.columns.2.y) + "  " + String(transform.columns.2.z) + " 0.0" + "  " + String(transform.columns.3.x) + "  " + String(transform.columns.3.y) + "  " + String(transform.columns.3.z) + " 1.0"+"\n"
         
-//        let rotx_ = d_rots.x
-//        let roty_ = d_rots.y
-//        let rotz_ = d_rots.z
-//
-//        let str_data_matm = String(frame_num) + "  " + String(position.x)+"  " + String(position.y)+"  " + String(position.z)+" "+String(rotx_)+" "+" "+String(roty_)+" "+String(rotz_)+"\n"
         
-        self.track_data.append(str_data)
         self.track_data_mat.append(str_mat)
-        if (self.track_data_file != nil){
-            FileManager.default.createFile(atPath: self.track_data_file!, contents: self.track_data.data(using: .ascii), attributes: nil)
+        if (self.track_data_mat_file != nil){
             FileManager.default.createFile(atPath: self.track_data_mat_file!, contents: self.track_data_mat.data(using: .ascii), attributes: nil)
         }
-        //print("debug tr:",transform.)
     }
     
     func save_image(_ frame_num:Int,_ frame: ARFrame){
@@ -160,7 +109,7 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
 
         if (self.seq_output_dir != nil){
             do {
-                let j_file = seq_output_dir!.appendingPathComponent(String(frame_num)+"_fileName.jpg")
+                let j_file = seq_output_dir!.appendingPathComponent("image_\(frame_num).jpg")
                 let url:URL = URL(fileURLWithPath: j_file.absoluteString)
                 try data!.write(to: url)
             } catch {
@@ -187,11 +136,11 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
             }
             
             self.record_frames+=1
+            let _rec_fr = self.record_frames
 
-            
-            DispatchQueue.global(qos:.background).async {
-                self.save_track_data(self.record_frames,frame)
-                self.save_image(self.record_frames,frame)
+            self.save_track_data(_rec_fr,frame)
+            DispatchQueue.global(qos:.utility).async {
+                self.save_image(_rec_fr,frame)
             }
         }
     }
@@ -200,12 +149,11 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
         print("start_record")
         self.create_dirs()
         if (data_output_dir != nil){
-            self.track_data_file = self.data_output_dir!.appendingPathComponent("track_data.txt").absoluteString
             self.track_data_mat_file = self.data_output_dir!.appendingPathComponent("track_data_mat.txt").absoluteString
         }
         self.record_frames = 0
         self.total_frames = 0
-        self.track_data = ""
+        self.track_data_mat = ""
         g_env.data_dir_state = false
     }
     

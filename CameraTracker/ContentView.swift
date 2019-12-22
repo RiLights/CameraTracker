@@ -33,6 +33,7 @@ struct ContentView : View {
                         Text("Tracking State:")
                         Text(g_data.track_state == 1 ? "Ready" : "Insufficient")
                     }
+                    .foregroundColor(.white)
                 }
                 Spacer()
             }
@@ -69,6 +70,8 @@ struct ContentView : View {
                         }
                             .frame(width: 50, height: 50)
                             .padding(.horizontal,20)
+                            .edgesIgnoringSafeArea(.all)
+                            .padding(.bottom,7)
                         Spacer()
                     }
                 }
@@ -86,10 +89,7 @@ struct ARViewContainer: UIViewRepresentable {
         let configuration = ARWorldTrackingConfiguration()
         let supportedFormats = ARWorldTrackingConfiguration.supportedVideoFormats
 
-        //configuration.planeDetection = .vertical
-        //configuration.environmentTexturing = .automatic
         configuration.isAutoFocusEnabled = false
-        //print("debug format",configuration.videoFormat.imageResolution.height)
         configuration.videoFormat = supportedFormats.last!
         for format: ARConfiguration.VideoFormat in supportedFormats {
             if (format.imageResolution.width == 720 ||
