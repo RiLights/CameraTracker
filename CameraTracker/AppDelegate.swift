@@ -13,6 +13,7 @@ class CameraDataFlow: ObservableObject {
     @Published var track_state = 0
     @Published var rec_state = false
     @Published var data_dir_state = false
+    @Published var frame_label:String = "Frame: 0000"
 }
 
 var g_env = CameraDataFlow()
@@ -57,7 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        //g_env.rec_state = false
         //self.window?. = false
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     }

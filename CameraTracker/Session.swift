@@ -136,20 +136,21 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
             }
             
             self.record_frames+=1
+            g_env.frame_label = String(format: "Frame: %04d",self.record_frames)
             let _rec_fr = self.record_frames
 
             self.save_track_data(_rec_fr,frame)
-            DispatchQueue.global(qos:.utility).async {
+            DispatchQueue.global(qos:.background).async {
                 self.save_image(_rec_fr,frame)
             }
         }
     }
     
     func start_record(){
-        print("start_record")
+        //print("start_record")
         self.create_dirs()
         if (data_output_dir != nil){
-            self.track_data_mat_file = self.data_output_dir!.appendingPathComponent("track_data_mat.txt").absoluteString
+            self.track_data_mat_file = self.data_output_dir!.appendingPathComponent("track_data_mat.chan").absoluteString
         }
         self.record_frames = 0
         self.total_frames = 0
@@ -158,7 +159,7 @@ class CTSession: ARView, ARSessionDelegate, ObservableObject {
     }
     
     func stop_record(){
-        print("stop_record")
+        //print("stop_record")
         g_env.data_dir_state = check_data_dir()
     }
 

@@ -50,29 +50,39 @@ struct ContentView : View {
                         .opacity(0.5)
                         .padding(.bottom, -40)
                     
-                    HStack{
-                        Spacer()
-
-                        Button(action: {
-                            if (self.g_data.track_state == 1){
-                                self.rec = !self.rec
-                                self.g_data.rec_state = self.rec
+                    HStack(spacing: 0){
+                        //Spacer()
+                        //    .frame(width: 100)
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                if (self.g_data.track_state == 1){
+                                    self.rec = !self.rec
+                                    self.g_data.rec_state = self.rec
+                                }
+                            }){
+                                RoundedRectangle(cornerRadius: self.g_data.rec_state ? 4 : 40)
+                                    .foregroundColor(self.g_data.rec_state ? .red : .white)
+                                    .padding(self.g_data.rec_state ? 15 : 3)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(g_data.track_state == 1 ? Color.white : Color.gray, lineWidth: 2)
+                                    )
+                                    .animation(.easeInOut(duration: 0.3))
                             }
-                        }){
-                            RoundedRectangle(cornerRadius: self.g_data.rec_state ? 4 : 40)
-                                .foregroundColor(self.g_data.rec_state ? .red : .white)
-                                .padding(self.g_data.rec_state ? 15 : 3)
-                                .overlay(
-                                    Circle()
-                                        .stroke(g_data.track_state == 1 ? Color.white : Color.gray, lineWidth: 2)
-                                )
-                                .animation(.easeInOut(duration: 0.3))
+                                .frame(width: 50, height: 50)
+                                //.padding(.horizontal,20)
+                                .edgesIgnoringSafeArea(.all)
+                                .padding(.bottom,7)
                         }
-                            .frame(width: 50, height: 50)
-                            .padding(.horizontal,20)
-                            .edgesIgnoringSafeArea(.all)
-                            .padding(.bottom,7)
-                        Spacer()
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                        Section{
+                            Text(g_env.frame_label)
+                                .foregroundColor(.white)
+                                .truncationMode(.head)
+                                //.padding(.leading,80)
+                        }
+                            .frame(minWidth: 0, maxWidth: .infinity)
                     }
                 }
 
@@ -89,7 +99,7 @@ struct ARViewContainer: UIViewRepresentable {
         let configuration = ARWorldTrackingConfiguration()
         let supportedFormats = ARWorldTrackingConfiguration.supportedVideoFormats
 
-        configuration.isAutoFocusEnabled = false
+        configuration.isAutoFocusEnabled = true
         configuration.videoFormat = supportedFormats.last!
         for format: ARConfiguration.VideoFormat in supportedFormats {
             if (format.imageResolution.width == 720 ||
